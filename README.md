@@ -20,9 +20,11 @@ Entity:
 
 Postavička:
 
-➢ Pohybuje se W, A, S, D, hráč 2 šipkami
+➢ Hráč 1 se pohybuje pomocí W, A, S, D
 
-➢ Hráč 1 rozbíjí bloky pomocí B hráč 2 klávesou M, musí stát na kameni
+➢ Hráč 2 se pohybuje pomocí šipek
+
+➢ Hráč 1 rozbíjí bloky pomocí B, Hráč 2 klávesou M, musí stát na kameni
 
 ➢ Má 5 životů (každý zvlášť)
 
