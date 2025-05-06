@@ -36,6 +36,7 @@ public class GameView {
         drawMap(canvas2.getGraphicsContext2D(), state.player2);
     }
 
+
     private void drawMap(GraphicsContext gc, Player player) {
         gc.clearRect(0, 0, 250, 250);
         for (int i = 0; i < state.currentMap.length; i++) {
@@ -50,6 +51,7 @@ public class GameView {
         gc.setFill(Color.BLUE);
         gc.fillOval(player.x * 20, player.y * 20, 18, 18);
     }
+
 
     private void handleInput(KeyEvent e) {
         switch (e.getCode()) {

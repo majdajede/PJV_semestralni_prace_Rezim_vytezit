@@ -18,7 +18,7 @@ public class Player implements Serializable {
     public void move(char[][] map) {
         int newX = x + dx;
         int newY = y + dy;
-        if (isInsideMap(newX, newY, map) && map[newY][newX] != 'K') {
+        if (isInsideMap(newX, newY, map)) {
             x = newX;
             y = newY;
         }

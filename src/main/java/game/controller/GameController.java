@@ -17,7 +17,8 @@ public class GameController {
             char[][] currentMap = MapManager.generateForbiddenTile(baseMap);
 
             Player p1 = new Player(1, 1, 3);
-            Player p2 = new Player(1, 1, 3);
+            Player p2 = new Player(3, 3, 3);
+
             state = new GameState(p1, p2, 1, currentMap);
 
             view = new GameView(state);
