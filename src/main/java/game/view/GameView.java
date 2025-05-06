@@ -49,6 +49,7 @@ public class GameView {
 
     private void drawMap(GraphicsContext gc, char[][] map, Player player) {
         gc.clearRect(0, 0, 250, 250);
+
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 char c = map[i][j];
