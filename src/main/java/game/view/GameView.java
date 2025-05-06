@@ -7,9 +7,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
-
 public class GameView {
-    private final int TILE_SIZE = 20;
+    private final int TILE_SIZE = 64; // VELIKOST BLOKU promenna v px
     private Canvas canvas1;
     private Canvas canvas2;
     private Scene scene;
@@ -41,14 +40,13 @@ public class GameView {
         draw();
     }
 
-
     private void draw() {
         drawMap(canvas1.getGraphicsContext2D(), state.map1, state.player1);
         drawMap(canvas2.getGraphicsContext2D(), state.map2, state.player2);
     }
 
     private void drawMap(GraphicsContext gc, char[][] map, Player player) {
-        gc.clearRect(0, 0, 250, 250);
+        gc.clearRect(0, 0, canvas1.getWidth(), canvas1.getHeight());
 
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
@@ -60,14 +58,15 @@ public class GameView {
                     case ' ' -> gc.setFill(Color.WHITE);
                     default -> gc.setFill(Color.LIGHTGRAY);
                 }
-                gc.fillRect(j * 20, i * 20, 20, 20);
+
+                gc.fillRect(j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 gc.setStroke(Color.BLACK);
-                gc.strokeRect(j * 20, i * 20, 20, 20); // mřížka
+                gc.strokeRect(j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE); // TU JSOU bloky
             }
         }
 
-        gc.setFill(player == state.player1 ? Color.HOTPINK : Color.DEEPPINK);
-        gc.fillOval(player.x * 20 + 2, player.y * 20 + 2, 16, 16); // hráč uprostřed políčka
+        gc.setFill(player == state.player1 ? Color.HOTPINK : Color.DEEPPINK); //barvicky
+        gc.fillOval(player.x * TILE_SIZE, player.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); // TU JSOU hraci
     }
 
     private void handleInput(KeyEvent e) {
@@ -88,8 +87,5 @@ public class GameView {
         state.player1.move(state.map1);
         state.player2.move(state.map2);
         draw();
-
     }
-
-
 }

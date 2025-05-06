@@ -18,8 +18,8 @@ public class GameController {
             char[][] map1 = MapManager.generateForbiddenTile(MapManager.loadMap("level1.json"));
             char[][] map2 = MapManager.generateForbiddenTile(MapManager.loadMap("level1.json"));
 
-            Player p1 = new Player(1, 1, 3);
-            Player p2 = new Player(3, 3, 3);
+            Player p1 = new Player(5, 5, 3);
+            Player p2 = new Player(5, 5, 3);
 
             state = new GameState(p1, p2, 1, map1, map2);
 
