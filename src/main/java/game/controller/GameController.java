@@ -36,8 +36,8 @@ public class GameController {
 
     public void refreshForbiddenTile() {
         try {
-            state.map1 = MapManager.generateForbiddenTile(MapManager.loadMap("level" + state.level + ".json"));
-            state.map2 = MapManager.generateForbiddenTile(MapManager.loadMap("level" + state.level + ".json"));
+            state.map1 = MapManager.generateForbiddenOnly(state.map1);
+            state.map2 = MapManager.generateForbiddenOnly(state.map2);
             view.updateMap(state.map1, state.map2);
         } catch (Exception e) {
             e.printStackTrace();

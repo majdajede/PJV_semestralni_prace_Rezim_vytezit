@@ -32,6 +32,36 @@ public class MapManager {
         }
         return map;
     }
+    public static char[][] generateForbiddenOnly(char[][] existingMap) {
+        char[][] newMap = Arrays.stream(existingMap)
+                .map(char[]::clone)
+                .toArray(char[][]::new);
+
+        // Tady ostranuju to staré Z
+        for (int i = 0; i < newMap.length; i++) {
+            for (int j = 0; j < newMap[i].length; j++) {
+                if (newMap[i][j] == 'Z') {
+                    newMap[i][j] = ' ';
+                }
+            }
+        }
+
+        List<int[]> emptyTiles = new ArrayList<>();
+        for (int i = 0; i < newMap.length; i++) {
+            for (int j = 0; j < newMap[i].length; j++) {
+                if (newMap[i][j] == ' ') {
+                    emptyTiles.add(new int[]{i, j});
+                }
+            }
+        }
+
+        if (!emptyTiles.isEmpty()) {
+            int[] chosen = emptyTiles.get(new Random().nextInt(emptyTiles.size()));
+            newMap[chosen[0]][chosen[1]] = 'Z';
+        }
+
+        return newMap;
+    }
 
 
     public static char[][] generateForbiddenTile(char[][] baseMap) {

@@ -9,16 +9,25 @@ import javafx.scene.paint.Color;
 
 
 public class GameView {
+    private final int TILE_SIZE = 20;
+    private Canvas canvas1;
+    private Canvas canvas2;
     private Scene scene;
-    private Canvas canvas1 = new Canvas(250, 250);
-    private Canvas canvas2 = new Canvas(250, 250);
     private GameState state;
 
     public GameView(GameState state) {
         this.state = state;
+
+        int rows = state.map1.length;
+        int cols = state.map1[0].length;
+
+        canvas1 = new Canvas(cols * TILE_SIZE, rows * TILE_SIZE);
+        canvas2 = new Canvas(cols * TILE_SIZE, rows * TILE_SIZE);
+
         HBox root = new HBox(canvas1, canvas2);
         this.scene = new Scene(root);
         draw();
+
         scene.setOnKeyPressed(this::handleInput);
     }
 
@@ -44,7 +53,7 @@ public class GameView {
             for (int j = 0; j < map[i].length; j++) {
                 char c = map[i][j];
                 switch (c) {
-                    case 'K' -> gc.setFill(Color.DARKGRAY);
+                    case 'K' -> gc.setFill(Color.TURQUOISE);
                     case 'Z' -> gc.setFill(Color.RED);
                     case ' ' -> gc.setFill(Color.WHITE);
                     default -> gc.setFill(Color.LIGHTGRAY);

@@ -19,23 +19,12 @@ public class Player implements Serializable {
         int newX = x + dx;
         int newY = y + dy;
 
-        if (newX < 0) {
-            newX = 0;
-        } else if (newX > 12) {
-            newX = 12;
-        }
-
-        if (newY < 0) {
-            newY = 0;
-        } else if (newY > 12) {
-            newY = 12;
-        }
-
         if (isInsideMap(newX, newY, map)) {
             x = newX;
             y = newY;
         }
     }
+
 
     public void setDirection(int dx, int dy) {
         this.dx = dx;
@@ -43,12 +32,11 @@ public class Player implements Serializable {
     }
 
     public void breakRock(char[][] map) {
-        int targetX = x + dx;
-        int targetY = y + dy;
-        if (isInsideMap(targetX, targetY, map) && map[targetY][targetX] == 'K') {
-            map[targetY][targetX] = ' ';
+        if (map[y][x] == 'K') {
+            map[y][x] = ' ';
         }
     }
+
 
     private boolean isInsideMap(int x, int y, char[][] map) {
         return y >= 0 && y < map.length && x >= 0 && x < map[0].length;
