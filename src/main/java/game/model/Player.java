@@ -23,6 +23,9 @@ public class Player implements Serializable {
             x = newX;
             y = newY;
         }
+
+        dx = 0;
+        dy = 0;
     }
 
 
@@ -32,10 +35,11 @@ public class Player implements Serializable {
     }
 
     public void breakRock(char[][] map) {
-        if (map[y][x] == 'K') {
+        if (isInsideMap(x, y, map) && map[y][x] == 'K') {
             map[y][x] = ' ';
         }
     }
+
 
 
     private boolean isInsideMap(int x, int y, char[][] map) {
