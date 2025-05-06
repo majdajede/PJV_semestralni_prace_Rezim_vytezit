@@ -56,6 +56,7 @@ public class GameView {
                 switch (c) {
                     case 'K' -> gc.setFill(Color.TURQUOISE);
                     case 'Z' -> gc.setFill(Color.RED);
+                    case 'X' -> gc.setFill(Color.BLACK);
                     case ' ' -> gc.setFill(Color.WHITE);
                     default -> gc.setFill(Color.LIGHTGRAY);
                 }

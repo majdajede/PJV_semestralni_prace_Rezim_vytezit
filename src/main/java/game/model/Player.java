@@ -19,7 +19,7 @@ public class Player implements Serializable {
         int newX = x + dx;
         int newY = y + dy;
 
-        if (isInsideMap(newX, newY, map)) {
+        if (isInsideMap(newX, newY, map) && map[newY][newX] != 'X') {
             x = newX;
             y = newY;
         }

@@ -4,7 +4,8 @@ public enum TileType {
     EMPTY(' '),
     ROCK('K'),
     PLAYER('P'),
-    FORBIDDEN('Z');
+    FORBIDDEN('Z'),
+    BLOCKER('X');
 
     public final char symbol;
 
