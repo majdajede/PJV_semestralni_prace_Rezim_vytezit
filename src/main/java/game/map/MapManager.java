@@ -14,7 +14,7 @@ public class MapManager {
                 line = line.trim();
                 if (line.startsWith("[") || mapStarted) {
                     mapStarted = true;
-                    line = line.replaceAll("[\[\]\"]", "");
+                    line = line.replaceAll("[\\[\\]\"]", "");
                     if (!line.isEmpty() && !line.equals("}")) {
                         lines.add(line);
                     }
