@@ -55,7 +55,7 @@ public class GameView {
             }
         }
 
-        gc.setFill(player == state.player1 ? Color.BLUE : Color.ORANGE);
+        gc.setFill(player == state.player1 ? Color.HOTPINK : Color.DEEPPINK);
         gc.fillOval(player.x * 20 + 2, player.y * 20 + 2, 16, 16); // hráč uprostřed políčka
     }
 
