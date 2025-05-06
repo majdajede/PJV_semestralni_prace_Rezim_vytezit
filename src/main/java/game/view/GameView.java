@@ -7,6 +7,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 
+
 public class GameView {
     private Scene scene;
     private Canvas canvas1 = new Canvas(250, 250);

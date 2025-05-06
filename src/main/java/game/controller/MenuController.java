@@ -15,4 +15,8 @@ public class MenuController {
         stage.setScene(scene);
         stage.show();
     }
+    public void onStartButtonClicked(Stage stage) {
+        new GameController().startGame(stage);
+    }
+
 }
