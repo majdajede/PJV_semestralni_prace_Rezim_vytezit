@@ -18,6 +18,19 @@ public class Player implements Serializable {
     public void move(char[][] map) {
         int newX = x + dx;
         int newY = y + dy;
+
+        if (newX < 0) {
+            newX = 0;
+        } else if (newX > 12) {
+            newX = 12;
+        }
+
+        if (newY < 0) {
+            newY = 0;
+        } else if (newY > 12) {
+            newY = 12;
+        }
+
         if (isInsideMap(newX, newY, map)) {
             x = newX;
             y = newY;
