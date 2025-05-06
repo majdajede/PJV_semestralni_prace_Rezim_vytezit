@@ -32,11 +32,11 @@ public class GameView {
     }
 
     private void draw() {
-        drawMap(canvas1.getGraphicsContext2D());
-        drawMap(canvas2.getGraphicsContext2D());
+        drawMap(canvas1.getGraphicsContext2D(), state.player1);
+        drawMap(canvas2.getGraphicsContext2D(), state.player2);
     }
 
-    private void drawMap(GraphicsContext gc) {
+    private void drawMap(GraphicsContext gc, Player player) {
         gc.clearRect(0, 0, 250, 250);
         for (int i = 0; i < state.currentMap.length; i++) {
             for (int j = 0; j < state.currentMap[i].length; j++) {
@@ -47,9 +47,28 @@ public class GameView {
                 gc.fillRect(j * 20, i * 20, 18, 18);
             }
         }
+        gc.setFill(Color.BLUE);
+        gc.fillOval(player.x * 20, player.y * 20, 18, 18);
     }
 
     private void handleInput(KeyEvent e) {
-        // TODO klavesy pohyb a rozbijeni kamenu
+        switch (e.getCode()) {
+            case W -> state.player1.setDirection(0, -1);
+            case S -> state.player1.setDirection(0, 1);
+            case A -> state.player1.setDirection(-1, 0);
+            case D -> state.player1.setDirection(1, 0);
+            case B -> state.player1.breakRock(state.currentMap);
+
+            case UP -> state.player2.setDirection(0, -1);
+            case DOWN -> state.player2.setDirection(0, 1);
+            case LEFT -> state.player2.setDirection(-1, 0);
+            case RIGHT -> state.player2.setDirection(1, 0);
+            case M -> state.player2.breakRock(state.currentMap);
+        }
+
+        state.player1.move(state.currentMap);
+        state.player2.move(state.currentMap);
+        draw();
     }
+
 }
