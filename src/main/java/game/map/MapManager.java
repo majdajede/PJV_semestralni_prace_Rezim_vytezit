@@ -9,13 +9,17 @@ public class MapManager {
         List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/maps/" + filename))) {
             String line;
-            boolean mapStarted = false;
+            boolean insideMap = false;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                if (line.startsWith("[") || mapStarted) {
-                    mapStarted = true;
-                    line = line.replaceAll("[\\[\\]\"]", "");
-                    if (!line.isEmpty() && !line.equals("}")) {
+                if (line.startsWith("\"map\"")) {
+                    insideMap = true;
+                    continue;
+                }
+                if (insideMap) {
+                    if (line.startsWith("]")) break;
+                    line = line.replaceAll("[\",]", "").trim();
+                    if (!line.isEmpty()) {
                         lines.add(line);
                     }
                 }
@@ -28,6 +32,7 @@ public class MapManager {
         }
         return map;
     }
+
 
     public static char[][] generateForbiddenTile(char[][] baseMap) {
         char[][] newMap = Arrays.stream(baseMap)

@@ -15,11 +15,13 @@ public class GameController {
         try {
             char[][] baseMap = MapManager.loadMap("level1.json");
             char[][] currentMap = MapManager.generateForbiddenTile(baseMap);
+            char[][] map1 = MapManager.generateForbiddenTile(MapManager.loadMap("level1.json"));
+            char[][] map2 = MapManager.generateForbiddenTile(MapManager.loadMap("level1.json"));
 
             Player p1 = new Player(1, 1, 3);
             Player p2 = new Player(3, 3, 3);
 
-            state = new GameState(p1, p2, 1, currentMap);
+            state = new GameState(p1, p2, 1, map1, map2);
 
             view = new GameView(state);
             scheduler = new ForbiddenTileScheduler();
@@ -31,12 +33,16 @@ public class GameController {
         }
     }
 
+
     public void refreshForbiddenTile() {
         try {
-            state.currentMap = MapManager.generateForbiddenTile(MapManager.loadMap("level" + state.level + ".json"));
-            view.updateMap(state.currentMap);
+            state.map1 = MapManager.generateForbiddenTile(MapManager.loadMap("level" + state.level + ".json"));
+            state.map2 = MapManager.generateForbiddenTile(MapManager.loadMap("level" + state.level + ".json"));
+            view.updateMap(state.map1, state.map2);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
 }

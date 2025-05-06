@@ -26,32 +26,38 @@ public class GameView {
         return scene;
     }
 
-    public void updateMap(char[][] map) {
-        state.currentMap = map;
+    public void updateMap(char[][] map1, char[][] map2) {
+        state.map1 = map1;
+        state.map2 = map2;
         draw();
     }
 
+
     private void draw() {
-        drawMap(canvas1.getGraphicsContext2D(), state.player1);
-        drawMap(canvas2.getGraphicsContext2D(), state.player2);
+        drawMap(canvas1.getGraphicsContext2D(), state.map1, state.player1);
+        drawMap(canvas2.getGraphicsContext2D(), state.map2, state.player2);
     }
 
-
-    private void drawMap(GraphicsContext gc, Player player) {
+    private void drawMap(GraphicsContext gc, char[][] map, Player player) {
         gc.clearRect(0, 0, 250, 250);
-        for (int i = 0; i < state.currentMap.length; i++) {
-            for (int j = 0; j < state.currentMap[i].length; j++) {
-                char c = state.currentMap[i][j];
-                if (c == 'K') gc.setFill(Color.GRAY);
-                else if (c == 'Z') gc.setFill(Color.RED);
-                else gc.setFill(Color.WHITE);
-                gc.fillRect(j * 20, i * 20, 18, 18);
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                char c = map[i][j];
+                switch (c) {
+                    case 'K' -> gc.setFill(Color.DARKGRAY);
+                    case 'Z' -> gc.setFill(Color.RED);
+                    case ' ' -> gc.setFill(Color.WHITE);
+                    default -> gc.setFill(Color.LIGHTGRAY);
+                }
+                gc.fillRect(j * 20, i * 20, 20, 20);
+                gc.setStroke(Color.BLACK);
+                gc.strokeRect(j * 20, i * 20, 20, 20); // mřížka
             }
         }
-        gc.setFill(Color.BLUE);
-        gc.fillOval(player.x * 20, player.y * 20, 18, 18);
-    }
 
+        gc.setFill(player == state.player1 ? Color.BLUE : Color.ORANGE);
+        gc.fillOval(player.x * 20 + 2, player.y * 20 + 2, 16, 16); // hráč uprostřed políčka
+    }
 
     private void handleInput(KeyEvent e) {
         switch (e.getCode()) {
@@ -59,18 +65,20 @@ public class GameView {
             case S -> state.player1.setDirection(0, 1);
             case A -> state.player1.setDirection(-1, 0);
             case D -> state.player1.setDirection(1, 0);
-            case B -> state.player1.breakRock(state.currentMap);
+            case B -> state.player1.breakRock(state.map1);
 
             case UP -> state.player2.setDirection(0, -1);
             case DOWN -> state.player2.setDirection(0, 1);
             case LEFT -> state.player2.setDirection(-1, 0);
             case RIGHT -> state.player2.setDirection(1, 0);
-            case M -> state.player2.breakRock(state.currentMap);
+            case M -> state.player2.breakRock(state.map2);
         }
 
-        state.player1.move(state.currentMap);
-        state.player2.move(state.currentMap);
+        state.player1.move(state.map1);
+        state.player2.move(state.map2);
         draw();
+
     }
+
 
 }
