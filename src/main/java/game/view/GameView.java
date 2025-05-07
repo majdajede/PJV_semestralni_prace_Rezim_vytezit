@@ -1,10 +1,12 @@
 package game.view;
 
 import game.model.*;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.*;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 public class GameView {
@@ -13,6 +15,8 @@ public class GameView {
     private Canvas canvas2;
     private Scene scene;
     private GameState state;
+    private Label livesLabel1;
+    private Label livesLabel2;
 
     public GameView(GameState state) {
         this.state = state;
@@ -23,7 +27,17 @@ public class GameView {
         canvas1 = new Canvas(cols * TILE_SIZE, rows * TILE_SIZE);
         canvas2 = new Canvas(cols * TILE_SIZE, rows * TILE_SIZE);
 
-        HBox root = new HBox(canvas1, canvas2);
+        livesLabel1 = new Label("Lives: " + state.player1.lives);
+        livesLabel2 = new Label("Lives: " + state.player2.lives);
+
+        VBox left = new VBox(livesLabel1, canvas1);
+        VBox right = new VBox(livesLabel2, canvas2);
+        left.setAlignment(Pos.CENTER);
+        right.setAlignment(Pos.CENTER);
+
+        HBox root = new HBox(left, right);
+        root.setSpacing(20);
+        //HBox root = new HBox(canvas1, canvas2);
         this.scene = new Scene(root);
         draw();
 
@@ -43,10 +57,12 @@ public class GameView {
     private void draw() {
         drawMap(canvas1.getGraphicsContext2D(), state.map1, state.player1);
         drawMap(canvas2.getGraphicsContext2D(), state.map2, state.player2);
+        livesLabel1.setText("Lives: " + state.player1.lives);
+        livesLabel2.setText("Lives: " + state.player2.lives);
     }
 
     private void drawMap(GraphicsContext gc, char[][] map, Player player) {
-        gc.clearRect(0, 0, canvas1.getWidth(), canvas1.getHeight());
+        gc.clearRect(0, 0, map[0].length * TILE_SIZE, map.length * TILE_SIZE);
 
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
@@ -61,7 +77,7 @@ public class GameView {
 
                 gc.fillRect(j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 gc.setStroke(Color.BLACK);
-                gc.strokeRect(j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE); // TU JSOU bloky
+                gc.strokeRect(j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
         }
 
