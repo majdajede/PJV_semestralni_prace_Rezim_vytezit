@@ -17,7 +17,9 @@ public class GameController {
     public void startGame(Stage stage) {
         try {
             GameState loaded = loadGame();
-            if (loaded != null) {
+            if (loaded == null) {
+                //změněná podmínka, možná nám to bude do budoucna dělat problémy,
+                // když budeme chtít přepínat úrovně
                 this.state = loaded;
                 state.remainingRocks1 = countRocks(state.map1);
                 state.remainingRocks2 = countRocks(state.map2);
