@@ -53,9 +53,10 @@ public class GameController {
             }
         }.start();
     }
-    private void returnToMenu() {
+
+    private void returnToMenu(boolean won) {
         javafx.application.Platform.runLater(() -> {
-            new MenuController().show(new Stage());
+            new MenuController().show(new Stage(), won ? "You Won!" : "Game Over");
         });
     }
 
@@ -71,7 +72,7 @@ public class GameController {
                 if (player.lives <= 0 && !state.gameOver) {
                     state.gameOver = true;
                     System.out.println("Player " + (isPlayer1 ? "1" : "2") + " died. Returning to menu...");
-                    returnToMenu();
+                    returnToMenu(false);
                     javafx.application.Platform.runLater(() -> {
                         ((Stage) view.getScene().getWindow()).close();
                     });
@@ -88,14 +89,8 @@ public class GameController {
                     saveGame();
                     char[][] map1 = MapManager.generateForbiddenTile(MapManager.loadMap("level2.json"));
                     char[][] map2 = MapManager.generateForbiddenTile(MapManager.loadMap("level2.json"));
-                    Player p1 = new Player(5, 5, 3);
-                    Player p2 = new Player(5, 5, 3);
                     state.map1 = map1;
                     state.map2 = map2;
-                    state.player1 = p1;
-                    state.player2 = p2;
-                    state.remainingRocks1 = countRocks(map1);
-                    state.remainingRocks2 = countRocks(map2);
 
                     //musime znova vycentrovat hrace
                     state.player1.x = 5;
@@ -103,9 +98,20 @@ public class GameController {
                     state.player2.x = 5;
                     state.player2.y = 5;
 
+                    state.remainingRocks1 = countRocks(map1);
+                    state.remainingRocks2 = countRocks(map2);
+
                     view.updateMap(map1, map2);
                 } catch (IOException e) {
                     e.printStackTrace();
+                }
+            } else {
+                if (!state.gameOver) {
+                    state.gameOver = true;
+                    returnToMenu(true);
+                    javafx.application.Platform.runLater(() -> {
+                        ((Stage) view.getScene().getWindow()).close();
+                    });
                 }
             }
         }

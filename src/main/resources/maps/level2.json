@@ -1,15 +1,15 @@
 {
   "map": [
     "XXXXXXXXXXX",
-    "X  X   K  X",
-    "X  X      X",
-    "X  K      X",
-    "X      XXXX",
-    "X  K      X",
-    "XXX    K  X",
-    "X     XXX X",
-    "X K   X   X",
-    "XKX   X K X",
-    "XXXXXXXXXXXX"
+    "X     X   X",
+    "X XXX X X X",
+    "X X K   X X",
+    "X X XXXXX X",
+    "X   X   K X",
+    "XXX X XXX X",
+    "X K X     X",
+    "X XXX XXX X",
+    "X   K   K X",
+    "XXXXXXXXXXX"
   ]
 }
