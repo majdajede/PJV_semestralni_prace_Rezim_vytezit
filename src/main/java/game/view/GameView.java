@@ -3,6 +3,7 @@ package game.view;
 import game.model.*;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import game.controller.GameController;
 import javafx.scene.canvas.*;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
@@ -18,7 +19,7 @@ public class GameView {
     private Label livesLabel1;
     private Label livesLabel2;
 
-    public GameView(GameState state) {
+    public GameView(GameState state, GameController controller) {
         this.state = state;
 
         int rows = state.map1.length;
@@ -37,7 +38,6 @@ public class GameView {
 
         HBox root = new HBox(left, right);
         root.setSpacing(20);
-        //HBox root = new HBox(canvas1, canvas2);
         this.scene = new Scene(root);
         draw();
 
@@ -46,6 +46,9 @@ public class GameView {
 
     public Scene getScene() {
         return scene;
+    }
+    public void updateLives() {
+        draw();
     }
 
     public void updateMap(char[][] map1, char[][] map2) {
@@ -87,21 +90,51 @@ public class GameView {
 
     private void handleInput(KeyEvent e) {
         switch (e.getCode()) {
-            case W -> state.player1.setDirection(0, -1);
-            case S -> state.player1.setDirection(0, 1);
-            case A -> state.player1.setDirection(-1, 0);
-            case D -> state.player1.setDirection(1, 0);
-            case B -> state.player1.breakRock(state.map1);
+            // Player 1
+            case W -> {
+                state.player1.setDirection(0, -1);
+                state.player1.move(state.map1);
+            }
+            case S -> {
+                state.player1.setDirection(0, 1);
+                state.player1.move(state.map1);
+            }
+            case A -> {
+                state.player1.setDirection(-1, 0);
+                state.player1.move(state.map1);
+            }
+            case D -> {
+                state.player1.setDirection(1, 0);
+                state.player1.move(state.map1);
+            }
+            case B -> {
+                state.player1.breakRock(state.map1, state, true);
+                state.player1.setDirection(0, 0); // Reset
+            }
 
-            case UP -> state.player2.setDirection(0, -1);
-            case DOWN -> state.player2.setDirection(0, 1);
-            case LEFT -> state.player2.setDirection(-1, 0);
-            case RIGHT -> state.player2.setDirection(1, 0);
-            case M -> state.player2.breakRock(state.map2);
+            // Player 2
+            case UP -> {
+                state.player2.setDirection(0, -1);
+                state.player2.move(state.map2);
+            }
+            case DOWN -> {
+                state.player2.setDirection(0, 1);
+                state.player2.move(state.map2);
+            }
+            case LEFT -> {
+                state.player2.setDirection(-1, 0);
+                state.player2.move(state.map2);
+            }
+            case RIGHT -> {
+                state.player2.setDirection(1, 0);
+                state.player2.move(state.map2);
+            }
+            case M -> {
+                state.player2.breakRock(state.map2, state, false);
+                state.player2.setDirection(0, 0); // Reset
+            }
         }
 
-        state.player1.move(state.map1);
-        state.player2.move(state.map2);
         draw();
     }
 }

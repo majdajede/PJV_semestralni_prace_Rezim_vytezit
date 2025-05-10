@@ -23,24 +23,23 @@ public class Player implements Serializable {
             x = newX;
             y = newY;
         }
-
-        dx = 0;
-        dy = 0;
     }
-
 
     public void setDirection(int dx, int dy) {
         this.dx = dx;
         this.dy = dy;
     }
 
-    public void breakRock(char[][] map) {
-        if (isInsideMap(x, y, map) && map[y][x] == 'K') {
+    public void breakRock(char[][] map, GameState state, boolean isPlayer1) {
+        if (map[y][x] == 'K') {
             map[y][x] = ' ';
+            if (isPlayer1) {
+                state.remainingRocks1--;
+            } else {
+                state.remainingRocks2--;
+            }
         }
     }
-
-
 
     private boolean isInsideMap(int x, int y, char[][] map) {
         return y >= 0 && y < map.length && x >= 0 && x < map[0].length;
