@@ -9,15 +9,22 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 public class GameView {
-    private final int TILE_SIZE = 64; // VELIKOST BLOKU promenna v px
+    private final int TILE_SIZE = 50; // VELIKOST BLOKU promenna v px
     private Canvas canvas1;
     private Canvas canvas2;
     private Scene scene;
     private GameState state;
     private Label livesLabel1;
     private Label livesLabel2;
+    //nacitani fotek
+    private final Image backgroundImg = new Image("file:src/main/resources/images/Blok64.png");
+    private final Image dangerImg = new Image("file:src/main/resources/images/Nebezpecny_blok64.png");
+    private final Image rockImg = new Image("file:src/main/resources/images/Zlato64.png");
+    private final Image playerImg = new Image("file:src/main/resources/images/Postavicka64.png");
+
 
     public GameView(GameState state, GameController controller) {
         this.state = state;
@@ -70,23 +77,26 @@ public class GameView {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 char c = map[i][j];
-                switch (c) {
-                    case 'K' -> gc.setFill(Color.TURQUOISE);
-                    case 'Z' -> gc.setFill(Color.RED);
-                    case 'X' -> gc.setFill(Color.BLACK);
-                    case ' ' -> gc.setFill(Color.WHITE);
-                    default -> gc.setFill(Color.LIGHTGRAY);
-                }
 
-                gc.fillRect(j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-                gc.setStroke(Color.BLACK);
-                gc.strokeRect(j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                switch (c) {
+                    case 'K' -> gc.drawImage(rockImg, j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    case 'Z' -> gc.drawImage(dangerImg, j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    case 'X' -> {
+                        gc.setFill(Color.BLACK);
+                        gc.fillRect(j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    }
+                    case ' ' -> gc.drawImage(backgroundImg, j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    default -> {
+                        gc.setFill(Color.LIGHTGRAY);
+                        gc.fillRect(j * TILE_SIZE, i * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    }
+                }
             }
         }
 
-        gc.setFill(player == state.player1 ? Color.HOTPINK : Color.DEEPPINK); //barvicky
-        gc.fillOval(player.x * TILE_SIZE, player.y * TILE_SIZE, TILE_SIZE, TILE_SIZE); // TU JSOU hraci
+        gc.drawImage(playerImg, player.x * TILE_SIZE, player.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
+
 
     private void handleInput(KeyEvent e) {
         switch (e.getCode()) {
