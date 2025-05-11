@@ -3,7 +3,6 @@ package game.view;
 import game.model.*;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import game.controller.GameController;
 import javafx.scene.canvas.*;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
@@ -26,7 +25,7 @@ public class GameView {
     private final Image playerImg = new Image("file:src/main/resources/images/Postavicka64.png");
 
 
-    public GameView(GameState state, GameController controller) {
+    public GameView(GameState state) {
         this.state = state;
 
         int rows = state.map1.length;

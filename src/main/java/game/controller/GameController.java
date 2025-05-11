@@ -30,7 +30,7 @@ public class GameController {
                 state = new GameState(p1, p2, 1, map1, map2);
             }
 
-            view = new GameView(state, this);
+            view = new GameView(state);
             scheduler = new ForbiddenTileScheduler();
             scheduler.start(this);
 
