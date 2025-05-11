@@ -22,6 +22,12 @@ public class MenuView {
         Button startButton = new Button("Start Game");
         startButton.setOnAction(e -> controller.onStartButtonClicked((Stage) startButton.getScene().getWindow()));
 
+        //chci aby tlačítko také mělo design
+        startButton.setStyle(
+                "-fx-background-color: #540b0e; " +
+                        "-fx-text-fill: white; "
+        );
+
         VBox layout = new VBox(20);
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().addAll(title);
