@@ -43,7 +43,7 @@ public class GameView {
         left.setAlignment(Pos.CENTER);
         right.setAlignment(Pos.CENTER);
 
-        HBox root = new HBox(left, right);
+        HBox root = new HBox(left, right);//horizontalni
         root.setSpacing(20);
         this.scene = new Scene(root);
         draw();
@@ -53,9 +53,6 @@ public class GameView {
 
     public Scene getScene() {
         return scene;
-    }
-    public void updateLives() {
-        draw();
     }
 
     public void updateMap(char[][] map1, char[][] map2) {
@@ -67,8 +64,13 @@ public class GameView {
     private void draw() {
         drawMap(canvas1.getGraphicsContext2D(), state.map1, state.player1);
         drawMap(canvas2.getGraphicsContext2D(), state.map2, state.player2);
+
+        //pridavame vyraznejsi text na zivoty
+        String labelStyle = "-fx-font-weight: bold; -fx-font-size: 16px;";
         livesLabel1.setText("Lives: " + state.player1.lives);
+        livesLabel1.setStyle(labelStyle);
         livesLabel2.setText("Lives: " + state.player2.lives);
+        livesLabel2.setStyle(labelStyle);
     }
 
     private void drawMap(GraphicsContext gc, char[][] map, Player player) {

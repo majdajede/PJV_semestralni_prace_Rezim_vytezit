@@ -15,8 +15,7 @@ public class GameController {
     private ForbiddenTileScheduler scheduler;
 
     public void startGame(Stage stage) {
-        try {
-            GameState loaded = loadGame();
+        try {GameState loaded = loadGame();
             if (loaded == null) {
                 //změněná podmínka, možná nám to bude do budoucna dělat problémy,
                 // když budeme chtít přepínat úrovně
@@ -55,6 +54,7 @@ public class GameController {
     }
 
     private void returnToMenu(boolean won) {
+
         javafx.application.Platform.runLater(() -> {
             new MenuController().show(new Stage(), won ? "You Won!" : "Game Over");
         });
