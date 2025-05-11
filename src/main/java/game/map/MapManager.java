@@ -2,7 +2,6 @@ package game.map;
 
 import java.io.*;
 import java.util.*;
-import game.model.TileType;
 
 public class MapManager {
     public static char[][] loadMap(String filename) throws IOException {
