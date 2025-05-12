@@ -28,7 +28,7 @@ public class GameState implements Serializable {
         this.lastHitTimeP2 = 0;
     }
 
-    private int countRocks(char[][] map) {
+    int countRocks(char[][] map) {
         int count = 0;
         for (char[] row : map) {
             for (char c : row) {

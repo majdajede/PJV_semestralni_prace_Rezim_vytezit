@@ -99,7 +99,7 @@ public class GameView {
     }
 
 
-    private void handleInput(KeyEvent e) {
+    void handleInput(KeyEvent e) {
         switch (e.getCode()) {
             // Player 1
             case W -> {
