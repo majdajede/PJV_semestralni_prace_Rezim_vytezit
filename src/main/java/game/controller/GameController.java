@@ -8,20 +8,25 @@ import game.util.ForbiddenTileScheduler;
 import game.view.GameView;
 
 import java.io.*;
+import java.util.logging.Logger;
 
 public class GameController {
     private GameView view;
     private GameState state;
     private ForbiddenTileScheduler scheduler;
+    Logger log = Logger.getLogger(GameController.class.getName());
 
     public void startGame(Stage stage) {
-        try {GameState loaded = loadGame();
-            if (loaded == null) {//tady máme docela vtipnou věc a to je null pointer exception
-                //změněná podmínka, možná nám to bude do budoucna dělat problémy,
+        try {
+            log.info("Spouštím novou hru");
+            GameState loaded = loadGame();
+            if (loaded == null) {
+                log.info("Vytvářím novou hru");
                 this.state = loaded;
                 state.remainingRocks1 = countRocks(state.map1);
                 state.remainingRocks2 = countRocks(state.map2);
             } else {
+                log.info("Načten uložený stav hry");
                 char[][] map1 = MapManager.generateForbiddenTile(MapManager.loadMap("level1.json"));
                 char[][] map2 = MapManager.generateForbiddenTile(MapManager.loadMap("level1.json"));
 
@@ -37,7 +42,7 @@ public class GameController {
             startCollisionChecker();
             stage.setScene(view.getScene());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("Chyba při spouštění hry");
         }
     }
 
@@ -64,13 +69,14 @@ public class GameController {
             long last = isPlayer1 ? state.lastHitTimeP1 : state.lastHitTimeP2;
             if (now - last > 500_000_000) {
                 player.lives--;
+                log.info("Hráč " + (isPlayer1 ? "1" : "2") + " ztratil život. Zbývající životy: " + player.lives);
                 if (isPlayer1) state.lastHitTimeP1 = now;
                 else state.lastHitTimeP2 = now;
                 view.updateMap(state.map1, state.map2);
 
                 if (player.lives <= 0 && !state.gameOver) {
                     state.gameOver = true;
-                    System.out.println("Player " + (isPlayer1 ? "1" : "2") + " died. Returning to menu...");
+                    log.info("Hráč " + (isPlayer1 ? "1" : "2") + " zemřel. Konec hry.");
                     returnToMenu(false);
                     javafx.application.Platform.runLater(() -> {
                         ((Stage) view.getScene().getWindow()).close();
@@ -86,12 +92,12 @@ public class GameController {
                 state.level = 2;
                 try {
                     saveGame();
+
                     char[][] map1 = MapManager.generateForbiddenTile(MapManager.loadMap("level2.json"));
                     char[][] map2 = MapManager.generateForbiddenTile(MapManager.loadMap("level2.json"));
                     state.map1 = map1;
                     state.map2 = map2;
 
-                    //musime znova vycentrovat hrace
                     state.player1.x = 5;
                     state.player1.y = 5;
                     state.player2.x = 5;
@@ -102,6 +108,7 @@ public class GameController {
 
                     view.updateMap(map1, map2);
                 } catch (IOException e) {
+
                     e.printStackTrace();
                 }
             } else {
@@ -130,6 +137,7 @@ public class GameController {
         try {
             state.map1 = MapManager.generateForbiddenOnly(state.map1);
             state.map2 = MapManager.generateForbiddenOnly(state.map2);
+
             view.updateMap(state.map1, state.map2);
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,6 +147,10 @@ public class GameController {
     public void saveGame() throws IOException {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("save.ser"))) {
             out.writeObject(state);
+            log.info("Uložení stavu hry proběhlo úspěšně");
+        } catch(IOException e){
+            log.info("Chyba při ukládání stavu hry");
+            throw e;
         }
     }
 
