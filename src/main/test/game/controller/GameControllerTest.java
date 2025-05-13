@@ -8,9 +8,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import static javafx.beans.binding.Bindings.when;
+import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import static org.mockito.Mockito.*;
 
 public class GameControllerTest {
 
@@ -36,7 +38,7 @@ public class GameControllerTest {
         // Arrange
         GameController controller = new GameController();
         Player mockPlayer = mock(Player.class);
-        when(mockPlayer.lives).thenReturn(3);
+        mockPlayer.lives = 3;
 
         char[][] map = {{'Z'}};
         GameState mockState = mock(GameState.class);
@@ -50,7 +52,7 @@ public class GameControllerTest {
     }
 
     @Test
-    public void startGame_LoadsSavedGame() throws IOException {
+    public void startGame_LoadsSavedGame() throws IOException, ClassNotFoundException {
         // Arrange
         GameController controller = new GameController();
         File mockFile = mock(File.class);

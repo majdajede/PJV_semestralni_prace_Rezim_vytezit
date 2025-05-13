@@ -6,7 +6,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import org.junit.Test;
 
-import static javafx.beans.binding.Bindings.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 public class GameViewTest {
 
@@ -15,7 +16,8 @@ public class GameViewTest {
         // Arrange
         GameState mockState = mock(GameState.class);
         Player mockPlayer = mock(Player.class);
-        when(mockState.player1).thenReturn(mockPlayer);
+        when(mockState.getPlayer1()).thenReturn(mockPlayer);//potřebuji opravit
+        //klidně na později
 
         GameView view = new GameView(mockState);
         KeyEvent mockEvent = mock(KeyEvent.class);
