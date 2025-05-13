@@ -1,4 +1,4 @@
-package game.process;
+package process;
 
 import game.controller.GameController;
 import game.model.GameState;
