@@ -11,7 +11,7 @@ import java.io.*;
 import java.util.logging.Logger;
 
 public class GameController {
-    private GameView view;
+    public GameView view; //změna
     public GameState state;
     private ForbiddenTileScheduler scheduler;
     Logger log = Logger.getLogger(GameController.class.getName());
@@ -55,6 +55,9 @@ public class GameController {
                 checkWin();
             }
         }.start();
+    }
+    public GameView getView() { //změna
+        return view;
     }
 
     private void returnToMenu(boolean won) {
