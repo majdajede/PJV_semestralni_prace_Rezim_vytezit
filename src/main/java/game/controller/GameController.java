@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 public class GameController {
     private GameView view;
-    GameState state;
+    public GameState state;
     private ForbiddenTileScheduler scheduler;
     Logger log = Logger.getLogger(GameController.class.getName());
 
@@ -64,7 +64,7 @@ public class GameController {
         });
     }
 
-    void checkHazardCollision(Player player, char[][] map, long now, boolean isPlayer1) {
+    public void checkHazardCollision(Player player, char[][] map, long now, boolean isPlayer1) {
         if (map[player.y][player.x] == 'Z') {
             long last = isPlayer1 ? state.lastHitTimeP1 : state.lastHitTimeP2;
             if (now - last > 500_000_000) {
@@ -86,7 +86,7 @@ public class GameController {
         }
     }
 
-    void checkWin() {
+    public void checkWin() {
         if (state.remainingRocks1 <= 0 && state.remainingRocks2 <= 0) {
             if (state.level == 1) {
                 state.level = 2;
