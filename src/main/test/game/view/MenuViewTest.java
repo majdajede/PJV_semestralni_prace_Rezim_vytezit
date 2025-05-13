@@ -6,14 +6,14 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class MenuView {
+public class MenuViewTest {
     @Test
     public void menuView_ShowsMessageWhenProvided() {
         // Arrange
         MenuController mockController = mock(MenuController.class);
 
         // Act
-        MenuView view = new MenuView(mockController, "Test Message");
+        MenuViewTest view = new MenuViewTest(mockController, "Test Message");
 
         // Assert
         assertTrue(view.getScene().getRoot().getChildrenUnmodifiable()//proč to nevidí getScene?

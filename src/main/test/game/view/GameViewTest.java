@@ -7,8 +7,6 @@ import javafx.scene.input.KeyEvent;
 import org.junit.Test;
 
 import static javafx.beans.binding.Bindings.when;
-import static jdk.internal.org.objectweb.asm.util.CheckClassAdapter.verify;
-import static jdk.jfr.internal.jfc.model.Constraint.any;
 
 public class GameViewTest {
 
