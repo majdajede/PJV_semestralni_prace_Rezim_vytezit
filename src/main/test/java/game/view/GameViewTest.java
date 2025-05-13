@@ -16,7 +16,7 @@ public class GameViewTest {
         // Arrange
         GameState mockState = mock(GameState.class);
         Player mockPlayer = mock(Player.class);
-        when(mockState.getPlayer1()).thenReturn(mockPlayer);//potřebuji opravit
+        when(mockState.player1).thenReturn(mockPlayer);
         //klidně na později
 
         GameView view = new GameView(mockState);

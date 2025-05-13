@@ -1,23 +1,34 @@
 package game.view;
 
 import game.controller.MenuController;
+import javafx.application.Platform;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 
 public class MenuViewTest {
+
+    @BeforeClass
+    public static void initToolkit() {
+        // Inicializace JavaFX toolkitu
+        Platform.startup(() -> {});
+    }
+
     @Test
     public void menuView_ShowsMessageWhenProvided() {
         // Arrange
-        MenuController mockController = mock(MenuController.class);
+        MenuController mockController = new MenuController(); // Použití skutečné instance
+        MenuView view = new MenuView(mockController, "Test Message");
 
         // Act
-        MenuViewTest view = new MenuViewTest(mockController, "Test Message");
+        Pane root = (Pane) view.getScene().getRoot();
 
         // Assert
-        assertTrue(view.getScene().getRoot().getChildrenUnmodifiable()//proč to nevidí getScene?
-                .stream().anyMatch(node -> node instanceof Label && ((Label)node).getText().equals("Test Message")));
+        assertTrue(root.getChildrenUnmodifiable()
+                .stream()
+                .anyMatch(node -> node instanceof Label && ((Label) node).getText().equals("Test Message")));
     }
 }
