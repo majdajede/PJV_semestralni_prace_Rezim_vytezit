@@ -167,5 +167,24 @@ public class AllTests {
         assertTrue(state.gameOver);
         // Ověření, že se zobrazí výherní zpráva by vyžadovalo testování UI, což je složitější
     }
+    // treti procesni
+    // hracse nesmi pohnout na blok 'X'
+    @Test
+    public void playerCannotMoveIntoBlockedTile() {
+        // Arrange
+        Player player = new Player(1, 1, 3);
+        char[][] map = {
+                {' ', 'X', ' '},
+                {' ', ' ', ' '}
+        };
+
+        player.setDirection(0, -1); // pokus o krok nahoru na blok x
+        player.move(map);
+
+        // Assert
+        assertEquals(1, player.x); // pozice se nezmenila
+        assertEquals(1, player.y);
+    }
+
 
 }
