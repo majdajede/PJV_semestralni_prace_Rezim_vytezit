@@ -114,22 +114,29 @@ public class AllTests {
     //funguje a je procesni
     // Rozbití kamene sníží počet zbývajících kamenů
     @Test
-    public void breakingRockDecrementsCounter() {
-        // Arrange
+    public void breakingRockTriggersWinCheck() {
         Player player = new Player(0, 0, 3);
-        char[][] map = {{'K'}}; // Kámen na pozici [0,0]
+        char[][] map = {{'K'}};
         GameState state = new GameState(player, new Player(0, 0, 3), 1, map, map);
         state.remainingRocks1 = 1;
+        state.remainingRocks2 = 0;
 
-        // Act
+        GameController controller = new GameController();
+        controller.state = state;
+        controller.view = mock(GameView.class);
+
+        //rozbití kamene
         player.breakRock(map, state, true);
+        //kontrola win
+        controller.checkWin();
 
         // Assert
-        assertEquals(0, state.remainingRocks1);
-        assertEquals(' ', map[0][0]); // Kámen byl odstraněn
+        assertEquals(2, controller.state.level);
+        assertEquals(2, state.level); // posun do další úrovně
     }
 
-//    funguje a je procesni
+
+    //    funguje a je procesni
 //    Stisknutí kláves správně pohybuje hráčem
     @Test
     public void keyPressesCorrectlyMovePlayer() {
@@ -159,7 +166,7 @@ public class AllTests {
         state.remainingRocks2 = 0;
         GameController controller = new GameController();
         controller.state = state;
-
+        controller.view = mock(GameView.class);
         // Act
         controller.checkWin();
 
@@ -167,10 +174,11 @@ public class AllTests {
         assertTrue(state.gameOver);
         // Ověření, že se zobrazí výherní zpráva by vyžadovalo testování UI, což je složitější
     }
+
     // treti procesni
     // hracse nesmi pohnout na blok 'X'
     @Test
-    public void playerCannotMoveIntoBlockedTile() {
+    public void playerAvoidsBlockedTileAndCanMoveElsewhere() {
         // Arrange
         Player player = new Player(1, 1, 3);
         char[][] map = {
@@ -178,13 +186,23 @@ public class AllTests {
                 {' ', ' ', ' '}
         };
 
-        player.setDirection(0, -1); // pokus o krok nahoru na blok x
+        //pokus o krok na X
+        player.setDirection(0, -1);
         player.move(map);
 
-        // Assert
-        assertEquals(1, player.x); // pozice se nezmenila
+        //pozice se nezměnila
+        assertEquals(1, player.x);
+        assertEquals(1, player.y);
+
+        //krok doprava
+        player.setDirection(1, 0);
+        player.move(map);
+
+        // Assert 2: pohyb se podařil
+        assertEquals(2, player.x);
         assertEquals(1, player.y);
     }
+
 
 
 }
