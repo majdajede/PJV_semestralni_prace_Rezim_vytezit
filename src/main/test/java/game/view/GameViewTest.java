@@ -11,7 +11,7 @@ import static org.mockito.Mockito.*;
 
 public class GameViewTest {
 
-    @Test
+    @Test //opravit
     public void handleInput_MovesPlayer() {
         // Arrange
         GameState mockState = mock(GameState.class);

@@ -25,14 +25,15 @@ public class GameControllerTest {
     public void checkWin_AdvancesToLevel2() throws IOException {
         // Arrange
         GameController controller = new GameController();
-        GameState state = new GameState(new Player(0, 0, 3), new Player(0, 0, 3), 1,
-                new char[][]{{' '}}, new char[][]{{' '}});
+        Player player = new Player(0, 0, 3);
+        char[][] testMap = {{' '}};
+        GameState state = new GameState(player, player, 1, testMap, testMap);
         state.remainingRocks1 = 0;
         state.remainingRocks2 = 0;
         controller.state = state;
 
         // Použití jednoduché implementace GameView
-        controller.view = new TestGameView();
+        controller.view = new TestGameView(state);
 
         // Act
         controller.checkWin();
@@ -46,13 +47,12 @@ public class GameControllerTest {
         // Arrange
         GameController controller = new GameController();
         Player player = new Player(0, 0, 3);
-
         char[][] map = {{'Z'}};
         GameState state = new GameState(player, player, 1, map, map);
         controller.state = state;
 
         // Použití jednoduché implementace GameView
-        controller.view = new TestGameView();
+        controller.view = new TestGameView(state);
 
         // Act
         controller.checkHazardCollision(player, map, 1_000_000_000L, true);
@@ -68,8 +68,9 @@ public class GameControllerTest {
         File file = new File("testSave.dat");
         file.createNewFile();
 
-        GameState state = new GameState(new Player(0, 0, 3), new Player(0, 0, 3), 1,
-                new char[][]{{' '}}, new char[][]{{' '}});
+        Player player = new Player(0, 0, 3);
+        char[][] testMap = {{' '}};
+        GameState state = new GameState(player, player, 1, testMap, testMap);
         controller.state = state;
 
         // Act
@@ -81,8 +82,8 @@ public class GameControllerTest {
 
     // Jednoduchá implementace GameView pro testy
     private static class TestGameView extends GameView {
-        public TestGameView() {
-            super(null);
+        public TestGameView(GameState state) {
+            super(state);
         }
 
         @Override
