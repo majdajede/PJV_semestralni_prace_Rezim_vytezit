@@ -23,7 +23,7 @@ public class PlayerTest {
         assertEquals(1, player.y);
     }
 
-    @Test //opravit
+    @Test
     public void breakRock_DecrementsCounter() {
         // Arrange
         Player player = new Player(0, 0, 3);
