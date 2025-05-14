@@ -178,30 +178,32 @@ public class AllTests {
     // treti procesni
     // hracse nesmi pohnout na blok 'X'
     @Test
-    public void playerAvoidsBlockedTileAndCanMoveElsewhere() {
-        // Arrange
+    public void playerBlockedThenMovesSuccessfully_UpdatesGameState() {
         Player player = new Player(1, 1, 3);
+        Player dummy = new Player(0, 0, 3);
         char[][] map = {
                 {' ', 'X', ' '},
                 {' ', ' ', ' '}
         };
+        GameState state = new GameState(player, dummy, 1, map, map);
 
-        //pokus o krok na X
+        // pokus o krok na X
         player.setDirection(0, -1);
-        player.move(map);
+        player.move(state.map1);
 
-        //pozice se nezměnila
+        // Assert 1 – pozice se nezměnila
         assertEquals(1, player.x);
         assertEquals(1, player.y);
 
-        //krok doprava
+        //krok doprava na volné místo
         player.setDirection(1, 0);
-        player.move(map);
+        player.move(state.map1);
 
-        // Assert 2: pohyb se podařil
+        // posun se povedl
         assertEquals(2, player.x);
         assertEquals(1, player.y);
     }
+
 
 
 
