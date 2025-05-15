@@ -28,6 +28,14 @@ public class GameState implements Serializable {
         this.lastHitTimeP2 = 0;
     }
 
+    /**
+     * Counts the number of rocks ('K') in the given map.
+     * This method iterates through the 2D character array and counts
+     * the occurrences of the character 'K', which represents rocks.
+     *
+     * @param map The 2D character array representing the map.
+     * @return The total number of rocks ('K') in the map.
+     */
     int countRocks(char[][] map) {
         int count = 0;
         for (char[] row : map) {
