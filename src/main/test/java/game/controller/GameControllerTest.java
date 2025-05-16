@@ -25,7 +25,6 @@ public class GameControllerTest {
         // Arrange
         GameController controller = new GameController();
 
-        // Reálný stav, žádné mocky
         GameState state = new GameState(
                 new Player(0, 0, 3),
                 new Player(0, 0, 3),
