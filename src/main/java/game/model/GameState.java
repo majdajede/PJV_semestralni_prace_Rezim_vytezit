@@ -8,10 +8,10 @@ public class GameState implements Serializable {
     public Player player1;
     public Player player2;
     public int level;
-    public char[][] map1;
-    public char[][] map2;
-    public int remainingRocks1;
-    public int remainingRocks2;
+    public transient char[][] map1;
+    public transient char[][] map2;
+    public transient int remainingRocks1;
+    public transient int remainingRocks2;
     public long lastHitTimeP1 = 0;
     public long lastHitTimeP2 = 0;
     public boolean gameOver = false;
@@ -24,19 +24,9 @@ public class GameState implements Serializable {
         this.map2 = map2;
         this.remainingRocks1 = countRocks(map1);
         this.remainingRocks2 = countRocks(map2);
-        this.lastHitTimeP1 = 0;
-        this.lastHitTimeP2 = 0;
     }
 
-    /**
-     * Counts the number of rocks ('K') in the given map.
-     * This method iterates through the 2D character array and counts
-     * the occurrences of the character 'K', which represents rocks.
-     *
-     * @param map The 2D character array representing the map.
-     * @return The total number of rocks ('K') in the map.
-     */
-    int countRocks(char[][] map) {
+    public int countRocks(char[][] map) {
         int count = 0;
         for (char[] row : map) {
             for (char c : row) {

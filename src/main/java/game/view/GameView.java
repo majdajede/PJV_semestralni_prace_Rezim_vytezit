@@ -24,8 +24,6 @@ public class GameView {
 
     public final Set<KeyCode> pressedKeys1 = new HashSet<>();
     public final Set<KeyCode> pressedKeys2 = new HashSet<>();
-    public final Set<KeyCode> newlyPressedKeys1 = new HashSet<>();
-    public final Set<KeyCode> newlyPressedKeys2 = new HashSet<>();
 
     private final Image backgroundImg = new Image("file:src/main/resources/images/Blok64.png");
     private final Image dangerImg = new Image("file:src/main/resources/images/Nebezpecny_blok64.png");
@@ -57,15 +55,27 @@ public class GameView {
         // KEY HANDLING
         scene.setOnKeyPressed(e -> {
             KeyCode code = e.getCode();
+
             switch (code) {
-                case W, A, S, D, B -> {
-                    if (pressedKeys1.add(code)) {
-                        newlyPressedKeys1.add(code);
+                // Pohyb hráče 1
+                case W, A, S, D -> pressedKeys1.add(code);
+
+                // Pohyb hráče 2
+                case UP, DOWN, LEFT, RIGHT -> pressedKeys2.add(code);
+
+                // Těžení hráče 1
+                case B -> {
+                    if (state.map1[state.player1.y][state.player1.x] == 'K') {
+                        state.player1.breakRock(state.map1, state, true);
+                        updateMap(state.map1, state.map2);
                     }
                 }
-                case UP, DOWN, LEFT, RIGHT, M -> {
-                    if (pressedKeys2.add(code)) {
-                        newlyPressedKeys2.add(code);
+
+                // Těžení hráče 2
+                case M -> {
+                    if (state.map2[state.player2.y][state.player2.x] == 'K') {
+                        state.player2.breakRock(state.map2, state, false);
+                        updateMap(state.map1, state.map2);
                     }
                 }
             }
@@ -74,9 +84,7 @@ public class GameView {
         scene.setOnKeyReleased(e -> {
             KeyCode code = e.getCode();
             pressedKeys1.remove(code);
-            newlyPressedKeys1.remove(code);
             pressedKeys2.remove(code);
-            newlyPressedKeys2.remove(code);
         });
     }
 
@@ -129,5 +137,4 @@ public class GameView {
     public void forceFocus() {
         scene.getRoot().requestFocus(); // požádáme root uzel o focus
     }
-
 }

@@ -33,25 +33,31 @@ public class GameController {
                 state = new GameState(p1, p2, 1, map1, map2);
             } else {
                 log.info("Načten uložený stav hry");
+
+                // Tohle přepíše staré serializované mapy novými
+                int lvl = loaded.level;
+                char[][] map1 = MapManager.generateForbiddenTile(MapManager.loadMap("level" + lvl + ".json"));
+                char[][] map2 = MapManager.generateForbiddenTile(MapManager.loadMap("level" + lvl + ".json"));
+
+                loaded.map1 = map1;
+                loaded.map2 = map2;
+                loaded.remainingRocks1 = loaded.countRocks(map1);
+                loaded.remainingRocks2 = loaded.countRocks(map2);
+
                 state = loaded;
             }
 
-            // Vytvoření view
             view = new GameView(state);
-
             stage.setScene(view.getScene());
             stage.show();
 
             Platform.runLater(() -> view.forceFocus());
             view.getScene().setOnMouseClicked(e -> view.forceFocus());
 
+            new Thread(() -> playerControlLoop(state.player1, true)).start();
+            new Thread(() -> playerControlLoop(state.player2, false)).start();
 
 
-            // Spuštění ovládacích vláken
-            new Thread(() -> playerControlLoop(state.player1, state.map1, true)).start();
-            new Thread(() -> playerControlLoop(state.player2, state.map2, false)).start();
-
-            // Zakázané dlaždice + kolize
             scheduler = new ForbiddenTileScheduler();
             scheduler.start(this);
             startCollisionChecker();
@@ -63,6 +69,7 @@ public class GameController {
             e.printStackTrace();
         }
     }
+
 
 
     private void startCollisionChecker() {
@@ -139,6 +146,7 @@ public class GameController {
             } else {
                 if (!state.gameOver) {
                     state.gameOver = true;
+                    new File("save.ser").delete();
                     returnToMenu(true);
                     Platform.runLater(() -> ((Stage) view.getScene().getWindow()).close());
                 }
@@ -179,20 +187,30 @@ public class GameController {
     public GameState loadGame() {
         File f = new File("save.ser");
         if (!f.exists()) return null;
+
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(f))) {
-            return (GameState) in.readObject();
+            GameState loaded = (GameState) in.readObject();
+
+            // POZOR: musíme načíst nové mapy podle aktuálního levelu
+            loaded.map1 = MapManager.generateForbiddenTile(MapManager.loadMap("level" + loaded.level + ".json"));
+            loaded.map2 = MapManager.generateForbiddenTile(MapManager.loadMap("level" + loaded.level + ".json"));
+            loaded.remainingRocks1 = loaded.countRocks(loaded.map1);
+            loaded.remainingRocks2 = loaded.countRocks(loaded.map2);
+
+            return loaded;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private void playerControlLoop(Player player, char[][] map, boolean isPlayer1) {
+
+    private void playerControlLoop(Player player, boolean isPlayer1) {
         long delay = 80;
-        long lastBreakTime = 0; // ← každé vlákno má vlastní
 
         while (!state.gameOver) {
             Set<KeyCode> keys = isPlayer1 ? view.pressedKeys1 : view.pressedKeys2;
+            char[][] map = isPlayer1 ? state.map1 : state.map2;
 
             synchronized (player) {
                 if (!keys.isEmpty()) {
@@ -212,18 +230,6 @@ public class GameController {
 
                     player.move(map);
                 }
-
-                long now = System.currentTimeMillis();
-
-                if (isPlayer1 && keys.contains(KeyCode.B) && now - lastBreakTime > 200) {
-                    player.breakRock(map, state, true);
-                    lastBreakTime = now;
-                }
-
-                if (!isPlayer1 && keys.contains(KeyCode.M) && now - lastBreakTime > 200) {
-                    player.breakRock(map, state, false);
-                    lastBreakTime = now;
-                }
             }
 
             Platform.runLater(() -> view.updateMap(state.map1, state.map2));
@@ -236,6 +242,7 @@ public class GameController {
             }
         }
     }
+
 
 
 
