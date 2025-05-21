@@ -21,7 +21,6 @@ public class GameViewTest {
 
     @Test
     public void handleInput_MovesPlayer() {
-        // Arrange
         Player mockPlayer1 = mock(Player.class);
         Player mockPlayer2 = mock(Player.class); // i když ho nepoužijeme, potřebujeme ho
 
@@ -38,10 +37,8 @@ public class GameViewTest {
         KeyEvent mockEvent = mock(KeyEvent.class);
         when(mockEvent.getCode()).thenReturn(KeyCode.W);
 
-        // Act
         view.handleInput(mockEvent);
 
-        // Assert
         verify(mockPlayer1).setDirection(0, -1);
         verify(mockPlayer1).move(any());
     }

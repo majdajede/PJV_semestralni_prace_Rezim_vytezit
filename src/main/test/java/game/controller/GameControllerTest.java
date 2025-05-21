@@ -40,17 +40,14 @@ public class GameControllerTest {
         GameView mockView = mock(GameView.class);
         controller.view = mockView;
 
-        // Act
         controller.checkWin();
 
-        // Assert
         assertEquals(2, controller.state.level);
         verify(mockView).updateMap(any(), any());
     }
 
     @Test
     public void checkHazardCollision_ReducesLives() {
-        // Arrange
         GameController controller = new GameController();
 
         Player player = new Player(0, 0, 3);
@@ -63,17 +60,14 @@ public class GameControllerTest {
         GameView mockView = mock(GameView.class);
         controller.view = mockView;
 
-        // Act
         controller.checkHazardCollision(player, map, 1_000_000_000L, true);
 
-        // Assert
         assertEquals(2, player.lives);
         verify(mockView).updateMap(any(), any());
     }
 
     @Test
-    public void loadGame_ReturnsGameState_WhenSaveExists() throws IOException, ClassNotFoundException {
-        // Arrange
+    public void loadGame_ReturnsGameState_WhenSaveExists() throws IOException {
         GameController controller = new GameController();
         GameState originalState = new GameState(
                 new Player(1, 1, 3),
@@ -82,16 +76,13 @@ public class GameControllerTest {
                 new char[][]{{' '}},
                 new char[][]{{' '}}
         );
-
         // Uložíme GameState do souboru
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("save.ser"))) {
             out.writeObject(originalState);
         }
 
-        // Act
         GameState loaded = controller.loadGame();
 
-        // Assert
         assertNotNull(loaded);
         assertEquals(1, loaded.level);
     }
