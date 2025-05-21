@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 
 public class ForbiddenTileSchedulerTest {
 
-    @Test //opravit
+    @Test
     public void start_SchedulesTask() {
 
         ForbiddenTileScheduler scheduler = new ForbiddenTileScheduler();

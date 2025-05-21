@@ -19,13 +19,13 @@ public class MenuViewTest {
 
     @Test
     public void menuView_ShowsMessageWhenProvided() {
-        MenuController mockController = new MenuController(); // Použití skutečné instance
-        MenuView view = new MenuView(mockController, "Test Message");
+        MenuController mockController = new MenuController();
+        MenuView view = new MenuView(mockController, "Test Message"); //místo třeba gameover nebo you won
 
         Pane root = (Pane) view.getScene().getRoot();
 
         assertTrue(root.getChildrenUnmodifiable()
                 .stream()
-                .anyMatch(node -> node instanceof Label && ((Label) node).getText().equals("Test Message")));
+                .anyMatch(node -> node instanceof Label && ((Label) node).getText().equals("Test Message"))); //existuje textovy label s textmessage
     }
 }
