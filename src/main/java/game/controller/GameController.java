@@ -19,6 +19,12 @@ public class GameController {
     private ForbiddenTileScheduler scheduler;
     Logger log = Logger.getLogger(GameController.class.getName());
 
+    /**
+     * Starts a new game. If a saved game state exists, it loads it; otherwise, it creates a new game.
+     * Sets up the game scene, initializes player controls, the forbidden tile scheduler, and collision checking.
+     *
+     * @param stage The main application window where the game scene will be set.
+     */
     public void startGame(Stage stage) {
         try {
             log.info("Spouštím novou hru");
@@ -71,7 +77,11 @@ public class GameController {
     }
 
 
-
+    /**
+     * Starts the collision checker for the game.
+     * This method uses an `AnimationTimer` to continuously check for hazard collisions
+     * for both players and to verify win conditions. The timer runs on each frame update.
+     */
     private void startCollisionChecker() {
         new AnimationTimer() {
             @Override
@@ -83,16 +93,39 @@ public class GameController {
         }.start();
     }
 
+    /**
+     * Retrieves the current game view.
+     * This method returns the `GameView` instance associated with the game controller.
+     *
+     * @return The current `GameView` instance.
+     */
     public GameView getView() {
         return view;
     }
 
+    /**
+     * Returns to the main menu after the game ends.
+     * This method is called when the game is over, either by winning or losing.
+     * It creates a new instance of `MenuController` and shows the menu stage with a message.
+     *
+     * @param won Indicates whether the player won or lost the game.
+     */
     private void returnToMenu(boolean won) {
         Platform.runLater(() -> {
             new MenuController().show(new Stage(), won ? "You Won!" : "Game Over");
         });
     }
 
+    /**
+     * Checks for hazard collisions for a player.
+     * This method checks if the player has collided with a hazard on the map.
+     * If a collision occurs, it updates the player's lives and checks for game over conditions.
+     *
+     * @param player   The player to check for collisions.
+     * @param map      The map where the player is located.
+     * @param now      The current time in nanoseconds.
+     * @param isPlayer1 Indicates whether the player is Player 1 or Player 2.
+     */
     public void checkHazardCollision(Player player, char[][] map, long now, boolean isPlayer1) {
         synchronized (player) {
             if (player.y >= 0 && player.y < map.length &&
@@ -119,6 +152,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Checks if the game is won.
+     * This method checks if both players have no remaining rocks. If so, it updates the level
+     * and loads the next level's map. If the game is over, it returns to the main menu.
+     */
     public void checkWin() {
         if (state.remainingRocks1 <= 0 && state.remainingRocks2 <= 0) {
             if (state.level == 1) {
@@ -154,6 +192,14 @@ public class GameController {
         }
     }
 
+    /**
+     * Counts the number of rocks on the map.
+     * This method iterates through the map and counts the occurrences of the character 'K',
+     * which represents a rock. It returns the total count of rocks found on the map.
+     *
+     * @param map The 2D character array representing the game map.
+     * @return The number of rocks found on the map.
+     */
     private int countRocks(char[][] map) {
         int count = 0;
         for (char[] row : map) {
@@ -164,6 +210,10 @@ public class GameController {
         return count;
     }
 
+    /**
+     * Refreshes the forbidden tile on both maps.
+     * This method generates a new forbidden tile on both maps and updates the game view.
+     */
     public void refreshForbiddenTile() {
         try {
             state.map1 = MapManager.generateForbiddenOnly(state.map1);
@@ -174,6 +224,12 @@ public class GameController {
         }
     }
 
+    /**
+     * Saves the current game state to a file.
+     * This method serializes the current game state and writes it to a file named "save.ser".
+     *
+     * @throws IOException If an error occurs during file writing.
+     */
     public void saveGame() throws IOException {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("save.ser"))) {
             out.writeObject(state);
@@ -184,6 +240,13 @@ public class GameController {
         }
     }
 
+    /**
+     * Loads the game state from a file.
+     * This method deserializes the game state from a file named "save.ser".
+     * If the file does not exist, it returns null.
+     *
+     * @return The loaded game state, or null if the file does not exist.
+     */
     public GameState loadGame() {
         File f = new File("save.ser");
         if (!f.exists()) return null;
@@ -204,7 +267,15 @@ public class GameController {
         }
     }
 
-
+    /**
+     * Handles the player's control loop.
+     * This method continuously checks for player input and updates the player's position
+     * on the map based on the pressed keys. It synchronizes access to the player object
+     * to ensure thread safety and updates the game view accordingly.
+     *
+     * @param player    The player whose controls are being handled.
+     * @param isPlayer1 A boolean indicating whether the player is Player 1 or Player 2.
+     */
     private void playerControlLoop(Player player, boolean isPlayer1) {
         long delay = 80;
 
