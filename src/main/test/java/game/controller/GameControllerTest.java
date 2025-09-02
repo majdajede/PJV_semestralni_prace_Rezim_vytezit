@@ -76,7 +76,7 @@ public class GameControllerTest {
                 new char[][]{{' '}},
                 new char[][]{{' '}}
         );
-        // Uložíme GameState do souboru
+
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("save.ser"))) {
             out.writeObject(originalState);
         }
